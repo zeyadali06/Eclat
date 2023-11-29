@@ -9,6 +9,6 @@ class PreparData:
         return True
 
     @staticmethod
-    def convert_to_horizontal(df: pd.DataFrame) -> pd.DataFrame:
+    def convert_to_vertical(df: pd.DataFrame) -> pd.DataFrame:
         # Convert the parametarized vertical dataframe to horizontal dataframe
         return df
