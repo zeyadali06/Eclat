@@ -1,16 +1,39 @@
 import pandas as pd
-from main import *
 
 
 class Eclat:
 
     @staticmethod
-    def genarate_frequent_itemsets(df: pd.DataFrame) -> list:
+    def genarate_frequent_itemsets(df: pd.DataFrame,minsub: float) -> list:
         # df: main dataframe
         # Genarate all frequent itemsets
         # should return list of dataframes each dataframe contain k-frequent itemsets (k = 1,2,3,.....)
-        return []
+        df=df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
+        freq=df
+        c=0
+        while True :
+            length=len(df)
+            for i in range(length - 1):
+                for j in range(i + 1, length):
+                    if c==0:
+                        print(df.loc[i, 'items'])
+                        new = pd.DataFrame({'items': [df.loc[i, 'items']+df.loc[j, 'items']], 'TID': [set(df.loc[i, 'TID']).intersection(set(df.loc[j, 'TID']))]})
+                        df = pd.concat([df, new], ignore_index=True)
+                    else :
+                        if df.loc[i, 'items'][0:c]==df.loc[j, 'items'][0:c] :
+                            new = pd.DataFrame({'items': [df.loc[i, 'items'][0:c]+df.loc[i, 'items'][c:]+df.loc[j, 'items'][c:]], 'TID': [set(df.loc[i, 'TID']).intersection(set(df.loc[j, 'TID']))]})
+                            df = pd.concat([df, new], ignore_index=True)
 
+                    
+            df=df.drop(range(0,length))
+            df.reset_index(drop=True, inplace=True)
+            df=df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
+            if len(df)==0 :
+                break
+            freq=pd.concat([freq,df], ignore_index=True)
+            c+=1
+            
+        return []
     @staticmethod
     def strong_rules(df: pd.DataFrame) -> list:
         # df: frequent itemset dataframe
