@@ -1,4 +1,6 @@
 import pandas as pd
+# from main import min_conf
+# from main import min_conf
 
 
 class Eclat:
@@ -40,11 +42,21 @@ class Eclat:
         return []
 
     @staticmethod
-    def calc_support(df: pd.DataFrame, items: list) -> float:
+    def calc_support(df: pd.DataFrame, items: list) -> int:
         # items is a list of items
         # you should calculate the support of items and return it
         # items may contain 1,2,.... items
-        return 0
+        supp = 0
+        for i in range(len(df)):
+            counter = 0
+            for j in items:
+                if df[df.columns[1]][i].count(j) > 0:
+                    counter += 1
+
+            if counter >= len(items):
+                supp += 1
+
+        return supp
 
     @staticmethod
     def calc_prob(df: pd.DataFrame, items: list) -> float:

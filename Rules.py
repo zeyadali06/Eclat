@@ -10,15 +10,15 @@ class Rules:
     lift = 0.0
     confidnce = 0.0
 
-    def __init__(self, df: pd.DataFrame, fir: str, sec: str) -> None:
+    def __init__(self, df: pd.DataFrame, fir: list, sec: list) -> None:
+        # df: the main dataframe
         self.first = fir
         self.second = sec
         self.lift = self.calc_lift(df)
+        self.confidnce = self.calc_conf(df)
 
     def calc_lift(self, df: pd.DataFrame) -> float:
-        # should return lift of rule if first -> second
-        # you can use function calc_prob(df) in Eclat class
         return Eclat.calc_prob(df, [self.first, self.second]) / (Eclat.calc_prob(df, [self.first]) * Eclat.calc_prob(df, [self.second]))
 
     def calc_conf(self, df: pd.DataFrame) -> float:
-        return 0.0
+        return Eclat.calc_support(df, [list(set(self.first + self.second))]) / Eclat.calc_support(df, self.first)
