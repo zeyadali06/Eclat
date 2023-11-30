@@ -6,18 +6,16 @@ from Eclat import Eclat
 warnings.filterwarnings('ignore', category=Warning)
 
 df = pd.read_excel("Horizontal_Format (1).xlsx", thousands=',')
-df['items'] = df['items'].astype(str)
+
 # min_supp = 0.0
 # min_conf = 0.0
 
-min_supp = 2
+min_supp = 3
 min_conf = 0.7
 
 for i in range(len(df)):
     df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
-print (df)    
-df.info()
-Eclat.genarate_frequent_itemsets(df,min_supp)
+print(Eclat.genarate_frequent_itemsets(df,min_supp))
 
 # while True:
 #     try:

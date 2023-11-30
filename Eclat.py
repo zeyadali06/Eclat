@@ -16,12 +16,11 @@ class Eclat:
             for i in range(length - 1):
                 for j in range(i + 1, length):
                     if c==0:
-                        print(df.loc[i, 'items'])
-                        new = pd.DataFrame({'items': [df.loc[i, 'items']+df.loc[j, 'items']], 'TID': [set(df.loc[i, 'TID']).intersection(set(df.loc[j, 'TID']))]})
+                        new = pd.DataFrame({'items': [df.iloc[i] ['items']+df.iloc[j] ['items']], 'TID': [set(df.iloc[i] ['TID']).intersection(set(df.iloc[j] ['TID']))]})
                         df = pd.concat([df, new], ignore_index=True)
                     else :
-                        if df.loc[i, 'items'][0:c]==df.loc[j, 'items'][0:c] :
-                            new = pd.DataFrame({'items': [df.loc[i, 'items'][0:c]+df.loc[i, 'items'][c:]+df.loc[j, 'items'][c:]], 'TID': [set(df.loc[i, 'TID']).intersection(set(df.loc[j, 'TID']))]})
+                        if df.iloc[i] ['items'][0:c]==df.iloc[j]['items'][0:c] :
+                            new = pd.DataFrame({'items': [df.iloc[i]['items'][0:c]+df.iloc[i]['items'][c:]+df.iloc[j] ['items'][c:]], 'TID':[set(df.iloc[i] ['TID']).intersection(set(df.iloc[j] ['TID']))]})
                             df = pd.concat([df, new], ignore_index=True)
 
                     
@@ -32,8 +31,8 @@ class Eclat:
                 break
             freq=pd.concat([freq,df], ignore_index=True)
             c+=1
-            
-        return []
+       
+        return freq
     @staticmethod
     def strong_rules(df: pd.DataFrame) -> list:
         # df: frequent itemset dataframe
