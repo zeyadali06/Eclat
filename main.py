@@ -11,12 +11,15 @@ df = pd.read_excel("Horizontal_Format (1).xlsx")
 min_supp = 2
 min_conf = 0.7
 
-print(df.columns[1])
+# print(df.columns[1])
 
 for i in range(len(df)):
     df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
 
-# Eclat.genarate_frequent_itemsets(df)
+# print(Eclat.genarate_frequent_itemsets(df, minsub=min_supp))
+
+# print(Eclat.calc_support(df, ['I', 'C']))
+
 
 print(df)
 
@@ -28,10 +31,8 @@ print(df)
 # li = [1, 2, 3, 4, 1]
 # print(li.count(1))
 
-df['items'] = df['items'].astype(str)
+# df['items'] = df['items'].astype(str)
 
-
-print(Eclat.calc_support(df, ['T2','T4']))
 
 # li=["T1", "T2", "T3"]
 # print(li[0:1])
