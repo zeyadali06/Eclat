@@ -11,7 +11,9 @@ class Eclat:
         # Genarate all frequent itemsets
         # should return list of dataframes each dataframe contain k-frequent itemsets (k = 1,2,3,.....)
         df=df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
-        freq=df
+        df.reset_index(drop=True, inplace=True)
+        freq=[df["items"].tolist()]
+        
         c=0
         while True :
             length=len(df)
@@ -31,8 +33,9 @@ class Eclat:
             df=df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
             if len(df)==0 :
                 break
-            freq=pd.concat([freq,df], ignore_index=True)
+            freq.append(df["items"].tolist())
             c+=1
+            
        
         return freq
     @staticmethod
