@@ -13,9 +13,19 @@ min_conf = 0.7
 
 for i in range(len(df)):
     df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
+    
 # Eclat.genarate_frequent_itemsets(df,min_supp)
 
+
 print(Eclat.genarate_frequent_itemsets(df,min_supp))
+
+# print(Eclat.genarate_frequent_itemsets(df, minsub=min_supp))
+
+# print(Eclat.calc_support(df, ['I', 'C']))
+
+
+print(df)
+
 
 # print(df[df.columns[1]][0][0])
 
@@ -28,7 +38,9 @@ print(Eclat.genarate_frequent_itemsets(df,min_supp))
 # df['items'] = df['items'].astype(str)
 
 
+
 # print(Eclat.calc_support(df, ['T2','T4']))
+
 
 # li=["T1", "T2", "T3"]
 # print(li[0:1])

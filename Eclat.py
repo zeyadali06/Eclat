@@ -26,8 +26,7 @@ class Eclat:
                         if df.iloc[i] ['items'][0:c]==df.iloc[j]['items'][0:c] :
                             new = pd.DataFrame({'items': [df.iloc[i]['items'][0:c]+df.iloc[i]['items'][c:]+df.iloc[j] ['items'][c:]], 'TID':[set(df.iloc[i] ['TID']).intersection(set(df.iloc[j] ['TID']))]})
                             df = pd.concat([df, new], ignore_index=True)
-
-                    
+               
             df=df.drop(range(0,length))
             df.reset_index(drop=True, inplace=True)
             df=df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
@@ -36,8 +35,8 @@ class Eclat:
             freq.append(df["items"].tolist())
             c+=1
             
-       
         return freq
+      
     @staticmethod
     def strong_rules(df: pd.DataFrame) -> list:
         # df: frequent itemset dataframe
@@ -46,20 +45,35 @@ class Eclat:
 
     @staticmethod
     def calc_support(df: pd.DataFrame, items: list) -> int:
+        """ 
+        NOTE: df should be the main dataframe
+        """
         # items is a list of items
         # you should calculate the support of items and return it
         # items may contain 1,2,.... items
-        supp = 0
+
+        if len(items) == 1:
+            for i in range(len(df)):
+                if (df[df.columns[0]][i] == items[0]):
+                    return len(df[df.columns[1]][i])
+
+        checker = []
         for i in range(len(df)):
-            counter = 0
             for j in items:
-                if df[df.columns[1]][i].count(j) > 0:
-                    counter += 1
+                if (df[df.columns[0]][i] == j):
+                    checker.append(set(df[df.columns[1]][i]))
 
-            if counter >= len(items):
-                supp += 1
+        li = []
+        intersecte = set({})
 
-        return supp
+        for i in range(len(checker)):
+            if i == 0:
+                intersecte.update(
+                    set(checker[i]).intersection(set(checker[i + 1])))
+                continue
+            intersecte = set(intersecte).intersection(checker[i])
+
+        return len(intersecte)
 
     @staticmethod
     def calc_prob(df: pd.DataFrame, items: list) -> float:
