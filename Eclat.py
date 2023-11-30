@@ -6,42 +6,55 @@ import pandas as pd
 class Eclat:
 
     @staticmethod
-    def genarate_frequent_itemsets(df: pd.DataFrame,minsub: float) -> list:
+    def genarate_frequent_itemsets(df: pd.DataFrame, minsub: float) -> list:
         # df: main dataframe
         # Genarate all frequent itemsets
         # should return list of dataframes each dataframe contain k-frequent itemsets (k = 1,2,3,.....)
-        df=df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
+        df = df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
         df.reset_index(drop=True, inplace=True)
-        freq=[df["items"].tolist()]
-        
-        c=0
-        while True :
-            length=len(df)
+        freq = [df["items"].tolist()]
+
+        c = 0
+        while True:
+            length = len(df)
             for i in range(length - 1):
                 for j in range(i + 1, length):
-                    if c==0:
-                        new = pd.DataFrame({'items': [df.iloc[i] ['items']+df.iloc[j] ['items']], 'TID': [set(df.iloc[i] ['TID']).intersection(set(df.iloc[j] ['TID']))]})
+                    if c == 0:
+                        new = pd.DataFrame({'items': [df.iloc[i]['items']+df.iloc[j]['items']],
+                                            'TID': [set(df.iloc[i]['TID']).intersection(set(df.iloc[j]['TID']))]})
                         df = pd.concat([df, new], ignore_index=True)
-                    else :
-                        if df.iloc[i] ['items'][0:c]==df.iloc[j]['items'][0:c] :
-                            new = pd.DataFrame({'items': [df.iloc[i]['items'][0:c]+df.iloc[i]['items'][c:]+df.iloc[j] ['items'][c:]], 'TID':[set(df.iloc[i] ['TID']).intersection(set(df.iloc[j] ['TID']))]})
+                    else:
+                        if df.iloc[i]['items'][0:c] == df.iloc[j]['items'][0:c]:
+                            new = pd.DataFrame({'items': [df.iloc[i]['items'][0:c]+df.iloc[i]['items'][c:]+df.iloc[j]['items'][c:]],
+                                                'TID': [set(df.iloc[i]['TID']).intersection(set(df.iloc[j]['TID']))]})
                             df = pd.concat([df, new], ignore_index=True)
-               
-            df=df.drop(range(0,length))
+
+            df = df.drop(range(0, length))
             df.reset_index(drop=True, inplace=True)
-            df=df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
-            if len(df)==0 :
+            df = df[df['TID'].apply(lambda tid: len(tid) >= minsub)]
+            if len(df) == 0:
                 break
             freq.append(df["items"].tolist())
-            c+=1
-            
+            c += 1
+
         return freq
-      
+
     @staticmethod
-    def strong_rules(df: pd.DataFrame) -> list:
+    def strong_rules(df: pd.DataFrame, minsup: int, minconf: float) -> list:
         # df: frequent itemset dataframe
         # should return list of class Rules
-        return []
+        freqitems = Eclat.genarate_frequent_itemsets(df, minsup)
+        strongrules = []
+        allrules = []
+        for i in range(len(freqitems)):
+            if len(freqitems[i][0]) == 1:
+                continue
+            for j in range(len(freqitems[i])):
+                for k in range(len(freqitems[i][j])):
+
+                    freqitems[i][j]
+
+        return strongrules
 
     @staticmethod
     def calc_support(df: pd.DataFrame, items: list) -> int:
