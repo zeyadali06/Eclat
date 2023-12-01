@@ -1,9 +1,12 @@
 import pandas as pd
 import warnings
 from Eclat import Eclat
+from PreparingData import PreparData
 warnings.filterwarnings('ignore', category=Warning)
 
-df = pd.read_excel("Horizontal_Format (1).xlsx")
+df = pd.read_excel("Horizontal_Format.xlsx")
+print(df)
+df=PreparData.is_vertical(df)
 
 # min_supp = 0.0
 # min_conf = 0.0
@@ -17,7 +20,7 @@ for i in range(len(df)):
 # Eclat.genarate_frequent_itemsets(df,min_supp)
 
 
-print(Eclat.genarate_frequent_itemsets(df,min_supp))
+# print(Eclat.genarate_frequent_itemsets(df,min_supp))
 
 # print(Eclat.genarate_frequent_itemsets(df, minsub=min_supp))
 
