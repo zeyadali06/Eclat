@@ -4,10 +4,10 @@ import pandas as pd
 class Evaluation:
 
     @staticmethod
-    def calc_prob(df: pd.DataFrame, items: list) -> float:
+    def calc_prob(df: pd.DataFrame, items: list, no_transactions: int) -> float:
         # items may contain 2 items for P(first U second) or contain 1 item for P(first)
         # calculate the probability of the paramter items
-        return Evaluation.calc_support(df, items) / len(df.explode(df.columns[1])[df.columns[1]].drop_duplicates())
+        return Evaluation.calc_support(df, items) / no_transactions
 
     @staticmethod
     def calc_support(df: pd.DataFrame, items: list) -> int:
@@ -32,8 +32,7 @@ class Evaluation:
         intersecte = set({})
         for i in range(len(checker)):
             if i == 0:
-                intersecte.update(
-                    set(checker[i]).intersection(set(checker[i + 1])))
+                intersecte.update(set(checker[i]).intersection(set(checker[i + 1])))
                 continue
             intersecte = set(intersecte).intersection(checker[i])
 

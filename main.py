@@ -1,103 +1,67 @@
-from itertools import combinations
 import pandas as pd
-import warnings
 from Eclat import Eclat
-from PreparingData import PreparData
+from PreparingData import PrepareData
+import warnings
 warnings.filterwarnings('ignore', category=Warning)
 
+
 df = pd.read_excel("Horizontal_Format.xlsx")
-df=PreparData.is_vertical(df)
-# print(df)
-# min_supp = 0.0
-# min_conf = 0.0
+df = PrepareData.is_vertical(df)
 
-min_supp = 3
-min_conf = 0.7
+min_supp = 0
+min_conf = 0.0
+number_of_transactions = len(df.explode(df.columns[1])[df.columns[1]].drop_duplicates())
 
-trans = []
+while True:
+    try:
+        print("\n------------------------- Support --------------------------------")
+        print("Do you want to enter numbers or percentages?\n1- number\n2- percentage")
+        choice = int(input().strip())
+        if choice == 1:
+            print("Enter Min Support: ", end='')
+            min_supp = int(input().strip())
+        elif choice == 2:
+            print("Enter Min Support: %", end='')
+            min_supp = int((float(input().strip()) / 100) * number_of_transactions)
+        else:
+            raise Exception()
+        if min_supp > number_of_transactions or min_supp < 0:
+            print("Enter Valid Support")
+            continue
+        break
+    except:
+        print("Enter Valid Number")
+        continue
 
-# for i in range(len(df)):
-#     df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
-    
-# print( Eclat.genarate_frequent_itemsets(df,min_supp))
-# Eclat.print_rules(Eclat.get_strong_rules(df,min_supp,min_conf))
-# print(Eclat.genarate_frequent_itemsets(df,min_supp))
+while True:
+    try:
+        print("\n------------------------- Confidence --------------------------------")
+        print("Do you want to enter numbers or percentages?\n1- number\n2- percentage")
+        choice = int(input().strip())
+        if choice == 1:
+            print("Enter Min Confidence: ", end='')
+            min_conf = float(input().strip())
+        elif choice == 2:
+            print("Enter Min Confidence: %", end='')
+            min_conf = float(input().strip()) / 100
+        else:
+            raise Exception()
+        break
+    except:
+        print("Enter Valid Number")
+        continue
 
-# print(Eclat.genarate_frequent_itemsets(df, minsub=min_supp))
-
-# print(Eclat.calc_support(df, ['I', 'C']))
-
-
-# print(df)
-
-
-# print(df[df.columns[1]][0][0])
-
-# for i in range(len(df)):
-#     print(df[df.columns[1]][i].count('T1'))
-
-# li = [1, 2, 3, 4, 1]
-# print(li.count(1))
-
-# df['items'] = df['items'].astype(str)
+print("\n------------------------- Inputs --------------------------------")
+print(f"Min Support: {min_supp}")
+print(f"Min Confidence: {min_conf}")
+print(f"Number Of Transactions: {number_of_transactions}")
 
 
-# print(Eclat.calc_support(df, ['T2','T4']))
+# Print all rules
+print("\n------------------------- All Rules --------------------------------")
+ret = Eclat.generate_rules(df, int(min_supp), number_of_transactions)
+Eclat.print_rules(ret)
 
-
-# li=["T1", "T2", "T3"]
-# print(li[0:1])
-
-# while True:
-#     try:
-#         print("\n------------------------- Support --------------------------------")
-#         print("Do you want to enter numbers or percentages?\n1- number\n2- percentage")
-#         choice = int(input().strip())
-#         if choice == 1:
-#             print("Enter Min Support: ", end='')
-#             min_supp = int(input().strip())
-#         elif choice == 2:
-#             print("Enter Min Support: %", end='')
-#             min_supp = (float(input().strip()) / 100) * len(df)
-#         else:
-#             raise Exception()
-#         break
-#     except:
-#         print("Enter Valid Number")
-#         continue
-
-# while True:
-#     try:
-#         print("\n------------------------- Support --------------------------------")
-#         print("Do you want to enter numbers or percentages?\n1- number\n2- percentage")
-#         choice = int(input().strip())
-#         if choice == 1:
-#             print("Enter Min Support: ", end='')
-#             min_supp = int(input().strip())
-#         elif choice == 2:
-#             print("Enter Min Support: %", end='')
-#             min_supp = (float(input().strip()) / 100) * len(df)
-#         else:
-#             raise Exception()
-#         break
-#     except:
-#         print("Enter Valid Number")
-#         continue
-
-# while True:
-#     try:
-#         print("\n------------------------- Confidence --------------------------------")
-#         print("Do you want to enter numbers or percentages?\n1- number\n2- percentage")
-#         choice = int(input().strip())
-#         if choice == 1:
-#             print("Enter Min Confidence: ", end='')
-#             min_conf = int(input().strip())
-#         elif choice == 2:
-#             print("Enter Min Confidence: %", end='')
-#             min_conf = (float(input().strip()) / 100)
-#         else:
-#             raise Exception()
-#         break
-#     except:
-#         print("Enter Valid Number")
-#         continue
+# Print strong rules
+print("\n------------------------- Strong Rules --------------------------------")
+Eclat.print_rules(Eclat.get_strong_rules(ret, min_conf))
