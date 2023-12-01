@@ -49,10 +49,13 @@ class Eclat:
         # return list containing strong rules
 
         allrules = Eclat.generate_rules(df, minsup, minconf)
-        for i in allrules:
-            if i.confidnce < minconf:
-                allrules.remove(i)
-        return allrules
+        all = []
+        # allrules.
+        for i in range(len(allrules)):
+            if allrules[i].confidnce >= minconf:
+                all.append(allrules[i])
+
+        return all
 
     @staticmethod
     def generate_rules(df: pd.DataFrame, minsup: int, minconf: float) -> list[Rules]:
@@ -62,7 +65,7 @@ class Eclat:
         # return list containing all rules
 
         freqitems = Eclat.genarate_frequent_itemsets(df, minsup)
-        strongrules = []
+        rules = []
         for i in range(len(freqitems)):
             if len(freqitems[i][0]) == 1:
                 continue
@@ -76,9 +79,17 @@ class Eclat:
                     for l in range(len(combination)):
                         if set(combination[k]).intersection(set(combination[l])) == set() and combination[k] != combination[l]:
                             ret = Rules(df, combination[k], combination[l])
-                            strongrules.append(ret)
+                            rules.append(ret)
 
-        return strongrules
+        filter = set()
+        unique = []
+        for obj in rules:
+            current = (obj.first, obj.second)
+            if current not in filter:
+                filter.add(current)
+                unique.append(obj)
+
+        return unique
 
     @staticmethod
     def print_rules(strongrules: list[Rules]) -> None:

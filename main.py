@@ -12,15 +12,21 @@ df = pd.read_excel("Horizontal_Format (1).xlsx")
 min_supp = 3
 min_conf = 0.7
 
+trans = []
+
 for i in range(len(df)):
     df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
 
-# Eclat.genarate_frequent_itemsets(df,min_supp)
+# print(Eclat.genarate_frequent_itemsets(df,min_supp))
 
 
+# print('================================')
+
+# ret = Eclat.generate_rules(df, min_supp, min_conf)
+# print(Eclat.print_rules(ret))
+# print('================================')
 ret = Eclat.get_strong_rules(df, min_supp, min_conf)
 Eclat.print_rules(ret)
-print(df)
 
 
 # def generate_rules(frequent_itemsets, min_confidence):

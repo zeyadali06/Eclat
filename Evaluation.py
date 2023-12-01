@@ -7,7 +7,7 @@ class Evaluation:
     def calc_prob(df: pd.DataFrame, items: list) -> float:
         # items may contain 2 items for P(first U second) or contain 1 item for P(first)
         # calculate the probability of the paramter items
-        return Evaluation.calc_support(df, items) / len(df)
+        return Evaluation.calc_support(df, items) / len(df.explode(df.columns[1])[df.columns[1]].drop_duplicates())
 
     @staticmethod
     def calc_support(df: pd.DataFrame, items: list) -> int:
