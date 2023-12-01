@@ -1,3 +1,4 @@
+from itertools import combinations
 import pandas as pd
 import warnings
 from Eclat import Eclat
@@ -8,23 +9,77 @@ df = pd.read_excel("Horizontal_Format (1).xlsx")
 # min_supp = 0.0
 # min_conf = 0.0
 
-min_supp = 2
+min_supp = 3
 min_conf = 0.7
+
+trans = []
 
 for i in range(len(df)):
     df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
-    
-# Eclat.genarate_frequent_itemsets(df,min_supp)
+
+# print(Eclat.genarate_frequent_itemsets(df,min_supp))
 
 
-print(Eclat.genarate_frequent_itemsets(df,min_supp))
+# print('================================')
+
+# ret = Eclat.generate_rules(df, min_supp, min_conf)
+# print(Eclat.print_rules(ret))
+# print('================================')
+ret = Eclat.get_strong_rules(df, min_supp, min_conf)
+Eclat.print_rules(ret)
+
+
+# def generate_rules(frequent_itemsets, min_confidence):
+#     rules = []
+#     for itemset, support in frequent_itemsets.items():
+#         if len(itemset) > 1:
+#             subsets = generate_subsets(itemset)
+#             # print("ok")
+#             for antecedent in subsets:
+#                 consequent = tuple(set(itemset) - set(antecedent))
+#                 if antecedent in frequent_itemsets:
+#                     confidence = support / frequent_itemsets[antecedent]
+#                     if confidence >= min_confidence:
+#                         rule = (antecedent, consequent, support, confidence)
+#                         rules.append(rule)
+#     return rules
+
+
+# def generate_subsets(itemset):
+#     subsets = []
+#     for r in range(1, len(itemset)):
+#         combinations_r = combinations(itemset, r)
+#         # print([tuple(sorted(comb)) for comb in combinations_r])
+#         subsets.extend([tuple(sorted(comb)) for comb in combinations_r])
+#         # print(subsets)
+#     # print(subsets)
+#     return subsets
+
+
+# # Sample frequent itemsets
+# frequent_itemsets = {
+#     ('A', 'B'): 30,
+#     ('A', 'C'): 20,
+#     ('B', 'C'): 25,
+#     ('A', 'B', 'C'): 15,
+# }
+
+# Generate strong rules
+# min_confidence = 0.5
+# rules = generate_rules(frequent_itemsets, min_confidence)
+
+# # Print strong rules
+# for antecedent, consequent, support, confidence in rules:
+#     print(antecedent, '->', consequent, '(support:',
+#           support, ', confidence:', confidence, ')')
+
 
 # print(Eclat.genarate_frequent_itemsets(df, minsub=min_supp))
 
 # print(Eclat.calc_support(df, ['I', 'C']))
 
 
-print(df)
+# print(df)
 
 
 # print(df[df.columns[1]][0][0])
@@ -36,7 +91,6 @@ print(df)
 # print(li.count(1))
 
 # df['items'] = df['items'].astype(str)
-
 
 
 # print(Eclat.calc_support(df, ['T2','T4']))
