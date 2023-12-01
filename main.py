@@ -1,3 +1,4 @@
+from itertools import combinations
 import pandas as pd
 import warnings
 from Eclat import Eclat
@@ -5,21 +6,21 @@ from PreparingData import PreparData
 warnings.filterwarnings('ignore', category=Warning)
 
 df = pd.read_excel("Horizontal_Format.xlsx")
-print(df)
 df=PreparData.is_vertical(df)
-
+# print(df)
 # min_supp = 0.0
 # min_conf = 0.0
 
-min_supp = 2
+min_supp = 3
 min_conf = 0.7
 
-for i in range(len(df)):
-    df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
+trans = []
+
+# for i in range(len(df)):
+#     df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
     
-# Eclat.genarate_frequent_itemsets(df,min_supp)
-
-
+# print( Eclat.genarate_frequent_itemsets(df,min_supp))
+# Eclat.print_rules(Eclat.get_strong_rules(df,min_supp,min_conf))
 # print(Eclat.genarate_frequent_itemsets(df,min_supp))
 
 # print(Eclat.genarate_frequent_itemsets(df, minsub=min_supp))
@@ -27,7 +28,7 @@ for i in range(len(df)):
 # print(Eclat.calc_support(df, ['I', 'C']))
 
 
-print(df)
+# print(df)
 
 
 # print(df[df.columns[1]][0][0])
@@ -39,7 +40,6 @@ print(df)
 # print(li.count(1))
 
 # df['items'] = df['items'].astype(str)
-
 
 
 # print(Eclat.calc_support(df, ['T2','T4']))
