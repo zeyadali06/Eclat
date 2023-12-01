@@ -42,15 +42,13 @@ class Eclat:
         return freq
 
     @staticmethod
-    def get_strong_rules(df: pd.DataFrame, minsup: int, minconf: float) -> list[Rules]:
+    def get_strong_rules(allrules: list[Rules], minconf: float) -> list[Rules]:
         """ 
         NOTE: df should be the main dataframe
         """
         # return list containing strong rules
 
-        allrules = Eclat.generate_rules(df, minsup, minconf)
         all = []
-        # allrules.
         for i in range(len(allrules)):
             if allrules[i].confidnce >= minconf:
                 all.append(allrules[i])
@@ -58,7 +56,7 @@ class Eclat:
         return all
 
     @staticmethod
-    def generate_rules(df: pd.DataFrame, minsup: int, minconf: float) -> list[Rules]:
+    def generate_rules(df: pd.DataFrame, minsup: int, no_transactions: int) -> list[Rules]:
         """ 
         NOTE: df should be the main dataframe
         """
@@ -72,13 +70,11 @@ class Eclat:
             for j in range(len(freqitems[i])):
                 combination = []
                 for k in range(1, len(freqitems[i][j])):
-                    combination.extend(combinations(
-                        [item for item in freqitems[i][j]], k))
-
+                    combination.extend(combinations([item for item in freqitems[i][j]], k))
                 for k in range(len(combination)):
                     for l in range(len(combination)):
                         if set(combination[k]).intersection(set(combination[l])) == set() and combination[k] != combination[l]:
-                            ret = Rules(df, combination[k], combination[l])
+                            ret = Rules(df, combination[k], combination[l], no_transactions)
                             rules.append(ret)
 
         filter = set()
@@ -94,4 +90,9 @@ class Eclat:
     @staticmethod
     def print_rules(strongrules: list[Rules]) -> None:
         for i in strongrules:
-            print(f"{''.join(i.first)} -> {''.join(i.second)}, confidance:{i.confidnce:.3f}, lift:{i.lift:.3f}")
+            if i.lift > 1:
+                print(f"{''.join(i.first)} -> {''.join(i.second)}, Confidance:{i.confidnce:.3f}, Lift:{i.lift:.3f}, Dependency:yes, Corelation:+ve")
+            elif i.lift < 1:
+                print(f"{''.join(i.first)} -> {''.join(i.second)}, Confidance:{i.confidnce:.3f}, Lift:{i.lift:.3f}, Dependency:yes, Corelation:-ve")
+            else:
+                print(f"{''.join(i.first)} -> {''.join(i.second)}, Confidance:{i.confidnce:.3f}, Lift:{i.lift:.3f}, Dependency:no")
