@@ -6,7 +6,7 @@ from Rules import Rules
 class Eclat:
 
     @staticmethod
-    def genarate_frequent_itemsets(df: pd.DataFrame, minsub: float) -> list[list[str]]:
+    def generate_frequent_itemsets(df: pd.DataFrame, minsub: float) -> list[list[str]]:
         """ 
         NOTE: df should be the main dataframe
         """
@@ -64,7 +64,7 @@ class Eclat:
         """
         # return list containing all rules
 
-        freqitems = Eclat.genarate_frequent_itemsets(df, minsup)
+        freqitems = Eclat.generate_frequent_itemsets(df, minsup)
         rules = []
         for i in range(len(freqitems)):
             if len(freqitems[i][0]) == 1:
