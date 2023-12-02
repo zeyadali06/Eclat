@@ -5,6 +5,9 @@ class PrepareData:
 
     @staticmethod
     def is_vertical(df: pd.DataFrame) -> pd.DataFrame:
+        """ 
+        NOTE: df should be the main dataframe
+        """
         for i in range(len(df)):
             df[df.columns[1]][i] = list(str.split(df.values[i][1], ','))
         # Check if the dataframe is vertical
@@ -17,6 +20,9 @@ class PrepareData:
 
     @staticmethod
     def to_vertical(df: pd.DataFrame) -> pd.DataFrame:
+        """ 
+        NOTE: df should be the main dataframe
+        """
         # Convert the parametarized horizontal dataframe to vertical dataframe
         newDf = pd.DataFrame(columns=["items", "TID"])
         filter = set()

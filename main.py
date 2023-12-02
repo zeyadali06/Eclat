@@ -56,6 +56,10 @@ print(f"Min Support: {min_supp}")
 print(f"Min Confidence: {min_conf}")
 print(f"Number Of Transactions: {number_of_transactions}")
 
+# Print all frequent itemsets
+print("\n------------------------- Frequent Itemsets --------------------------------")
+for index, item in enumerate(Eclat.generate_frequent_itemsets(df, min_supp)):
+    print(f"Frequent {index + 1}-Itemsets: {item}")
 
 # Print all rules
 print("\n------------------------- All Rules --------------------------------")

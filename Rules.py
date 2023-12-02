@@ -18,7 +18,13 @@ class Rules:
         self.confidnce = self.calc_conf(df)
 
     def calc_lift(self, df: pd.DataFrame, no_transactions: int) -> float:
+        """ 
+        NOTE: df should be the main dataframe
+        """
         return Evaluation.calc_prob(df, self.first + self.second, no_transactions) / (Evaluation.calc_prob(df, self.first, no_transactions) * Evaluation.calc_prob(df, self.second, no_transactions))
 
     def calc_conf(self, df: pd.DataFrame) -> float:
+        """ 
+        NOTE: df should be the main dataframe
+        """
         return Evaluation.calc_support(df, list(set(self.first + self.second))) / Evaluation.calc_support(df, self.first)

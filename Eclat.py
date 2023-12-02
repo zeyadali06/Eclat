@@ -69,14 +69,19 @@ class Eclat:
                 continue
             for j in range(len(freqitems[i])):
                 combination = []
+                
+                # generate combinations of each item
                 for k in range(1, len(freqitems[i][j])):
                     combination.extend(combinations([item for item in freqitems[i][j]], k))
+                    
                 for k in range(len(combination)):
                     for l in range(len(combination)):
+                        # create object of class Rules if the two comb. don't equal each other and there is no intersaction
                         if set(combination[k]).intersection(set(combination[l])) == set() and combination[k] != combination[l]:
                             ret = Rules(df, combination[k], combination[l], no_transactions)
                             rules.append(ret)
 
+        # filter duplicated rules
         filter = set()
         unique = []
         for obj in rules:
